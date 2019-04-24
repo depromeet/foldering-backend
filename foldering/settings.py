@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     'FolderingAuthServer.apps.FolderingauthserverConfig',
     'FolderingManageServer.apps.FolderingmanageserverConfig',
+    'FolderingFolderServer.apps.FolderingfolderserverConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+
 ]
 
 MIDDLEWARE = [
@@ -79,11 +81,17 @@ WSGI_APPLICATION = 'foldering.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'foldering',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '3307',
         'OPTIONS' : {
             'read_default_file' : os.path.join(BASE_DIR, "mysql.cnf"),
         }
     }
 }
+
 
 
 # Password validation
@@ -125,3 +133,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR,'/static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
