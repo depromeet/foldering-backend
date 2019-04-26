@@ -30,9 +30,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+# TODO 전반적으로 코드 정리 필요 (코드 막 짜서 너무 더러움)
+
 # 사용자가 가지고 있는 폴더 리스트 보기
 class FolderListView(APIView):
-    serializer_class = FolderModelSerializer
+    serializer_class = FolderListSerializer
 
     # [GET] /api/folder/{userId} 사용자의 폴더 리스트 확인
     def get(self, *args, **kwargs):
@@ -106,10 +108,26 @@ class FolderCreateView(APIView):
         if serializer.is_valid():
             serializer.save()
 
-            result_msg = "폴더 "+ str(received_data['folder_name']) +"이(가) 생성되었습니다."
+            folder_uid = serializer.data['id']
+            folder_name = serializer.data['folder_name']
+            # print(folder_uid)
+
+            result_msg = "폴더 "+ str(serializer.data['folder_name']) +"이(가) 생성 되었습니다."
+
+            participated_in_data = {"folder_uid" : folder_uid, "user_uid" : user_pk}
+
+            participated_in_data = json.dumps(participated_in_data)
+            print("[PARTICIPATED DATA] " +participated_in_data)
+
+            participated_in_data = json.loads(participated_in_data)
+
+            serializer = ParticipationModelSerializer(data=participated_in_data)
+
+            if serializer.is_valid():
+                serializer.save()
 
             # 폴더 생성 완료
-            return Response({'result': {"data": serializer.data,"msg":result_msg}}, status=status.HTTP_200_OK)
+            return Response({'result': {"folder_uid" : folder_uid, "folder_name" : folder_name ,"msg" : result_msg}}, status=status.HTTP_200_OK)
 
         result_msg = {'msg': 'Folder Create Failed'}
         return Response({'result': result_msg}, status=status.HTTP_200_OK)
@@ -118,45 +136,3 @@ class FolderCreateView(APIView):
     def get_user_obj(self, user_uid ,*args, **kwargs):
         user_obj = User.objects.get(user_uid=user_uid) # 사용자 목록을 가져옴
         return user_obj
-
-
-
-
-# from rest_framework import viewsets
-# from .models import Link, Text, Image, Folder
-# from .serializers import LinkSerializer, TextSerializer, ImageSerializer, FolderSerializer
-# from rest_framework.response import Response
-# from rest_framework.decorators import detail_route
-#
-#
-# class FolderViewSet(viewsets.ModelViewSet):
-#    queryset = Folder.objects.all()
-#    serializer_class = FolderSerializer
-#
-#    @detail_route(methods=['post'], url_path='createfolder')
-#    def createfolder(self, request, pk=None):
-#       folder = Folder.objects.create(pk=pk)
-#       return Response("success")
-#
-#    @detail_route(methods=['get'], url_path='showfolder')
-#    def showfolder(self, request, pk=None):
-#       folder = Folder.objects.all(pk=pk)
-#       return Response(folder)
-#
-#    @detail_route(methods=['delete'], url_path='deletefolder')
-#    def deletefolder(self, request, pk=None):
-#       folder = Folder.objects.all(pk=pk)
-#       folder.delete()
-#       return Response("success")
-#
-# class LinkViewSet(viewsets.ModelViewSet):
-#    queryset = Link.objects.all()
-#    serializer_class = LinkSerializer
-#
-# class TextViewSet(viewsets.ModelViewSet):
-#    queryset = Text.objects.all()
-#    serializer_class = TextSerializer
-#
-# class ImageViewSet(viewsets.ModelViewSet):
-#    queryset = Image.objects.all()
-#    serializer_class = ImageSerializer
