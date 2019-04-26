@@ -4,6 +4,6 @@ from FolderingAuthServer import views
 
 
 urlpatterns = [
-    # 회원가입 [POST] /api/signup
+    # 회원가입      [POST]     /api/signup
     path('',views.UserCreateView.as_view()),
 ]

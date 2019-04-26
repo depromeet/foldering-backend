@@ -5,8 +5,11 @@ from FolderingFolderServer import views
 
 
 urlpatterns = [
-    #  [POST] /api/folder/
+    #  [GET]    폴더 리스트 보기   /api/folder/{userId}
     path('/<int:userId>/', views.FolderListView.as_view()),
+    #  [POST]   새로운 폴더 생성   /api/folder/{userId}/create
+    path('/<int:userId>/create/', views.FolderCreateView.as_view()),
+
 ]
 
 # from django.conf.urls import include

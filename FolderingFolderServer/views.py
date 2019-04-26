@@ -77,6 +77,50 @@ class FolderListView(APIView):
         user_queryset = User.objects.all() # 사용자 목록을 가져옴
         return user_queryset
 
+# 새로운 폴더 생성
+class FolderCreateView(APIView):
+
+    # [POST] /api/folder/{userId} 사용자의 폴더 리스트 확인
+    def post(self, request, *args, **kwargs):
+        received_data = json.dumps(request.data)
+
+        # print(received_data)
+
+        try:
+            user_obj = self.get_user_obj(int(self.kwargs['userId'])) # userId를 사용하는 user object
+            user_pk = user_obj.pk
+
+            received_data = {"folder_name": request.data['folder_name'], "manager_id" : user_pk}
+
+            received_data = json.dumps(received_data)
+            print("[RECEIVED_DATA] "+received_data)
+
+            received_data = json.loads(received_data)
+        except:
+            return Response({'result': {'msg': 'Folder Create Failed'}},status=status.HTTP_200_OK)
+
+
+        # Model에 저장 위해 직렬화
+        serializer = FolderModelSerializer(data=received_data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            result_msg = "폴더 "+ str(received_data['folder_name']) +"이(가) 생성되었습니다."
+
+            # 폴더 생성 완료
+            return Response({'result': {"data": serializer.data,"msg":result_msg}}, status=status.HTTP_200_OK)
+
+        result_msg = {'msg': 'Folder Create Failed'}
+        return Response({'result': result_msg}, status=status.HTTP_200_OK)
+
+
+    def get_user_obj(self, user_uid ,*args, **kwargs):
+        user_obj = User.objects.get(user_uid=user_uid) # 사용자 목록을 가져옴
+        return user_obj
+
+
+
 
 # from rest_framework import viewsets
 # from .models import Link, Text, Image, Folder
