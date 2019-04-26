@@ -17,7 +17,7 @@ class UserCreateView(APIView):
     def post(self, request, *args, **kwargs):
         received_data = json.dumps(request.data)
 
-        print(received_data)
+        # print(received_data)
 
         # Model에 저장 위해 직렬화
         serializer = UserModelSerializer(data=request.data)

@@ -81,11 +81,6 @@ WSGI_APPLICATION = 'foldering.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'foldering',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '3307',
         'OPTIONS' : {
             'read_default_file' : os.path.join(BASE_DIR, "mysql.cnf"),
         }
