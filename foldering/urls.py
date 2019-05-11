@@ -20,9 +20,5 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/signup/', include('FolderingAuthServer.urls')),
-    path('api/folder/', include('FolderingFolderServer.urls')),
-    # path('api/share/', include('FolderingManageServer')),
-    # path('FolderingFolderServer/', include('FolderingFolderServer.urls')),
-# ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-]
+    path('FolderingFolderServer/', include('FolderingFolderServer.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
