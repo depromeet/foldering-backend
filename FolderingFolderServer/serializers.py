@@ -1,5 +1,5 @@
 from rest_framework import serializers 
-from .models import Link, Text, Image, Folder
+from .models import Link, Text, Image, Folder, User
 
 class LinkSerializer(serializers.ModelSerializer): 
    class Meta: 
@@ -23,7 +23,13 @@ class FolderSerializer(serializers.ModelSerializer):
     texts = TextSerializer(many=True, read_only=True)
     images = ImageSerializer(many=True, read_only=True)
 
-
     class Meta: 
        model = Folder
-       fields = ('title','datetime', 'links', 'texts', 'images')
+       fields = ('title', 'owner', 'id', 'datetime', 'links', 'texts', 'images')
+
+class UserSerializer(serializers.ModelSerializer):
+    userImage = serializers.ImageField(use_url=True)
+    
+    class Meta:
+       model = User
+       fields = '__all__'

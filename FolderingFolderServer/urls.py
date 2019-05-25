@@ -1,6 +1,6 @@
 from django.conf.urls import include
 from rest_framework.routers import DefaultRouter 
-from .views import LinkViewSet, TextViewSet, ImageViewSet, FolderViewSet
+from .views import LinkViewSet, TextViewSet, ImageViewSet, FolderViewSet, UserViewSet
 from django.urls import path
 
 router = DefaultRouter() 
@@ -19,4 +19,8 @@ urlpatterns = [
 router.register('Folder', FolderViewSet) 
 urlpatterns = [ 
     path('', include(router.urls)), 
-]
+] 
+router.register('User', UserViewSet) 
+urlpatterns = [ 
+    path('', include(router.urls)), 
+] 
